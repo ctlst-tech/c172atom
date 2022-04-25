@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<flow>
+    <spec name="control">
+        <annotation>
+        </annotation>
+
+        <inputs>
+            <i alias="nav"/>
+            <i alias="throttle_override"/>
+            <i alias="mixture_override"/>
+        </inputs>
+
+        <outputs>
+            <o alias="aileron"/>
+            <o alias="elevator"/>
+            <o alias="rudder"/>
+            <o alias="mixture"/>
+            <o alias="throttle"/>
+            <o alias="flaps"/>
+            <o alias="brake_left"/>
+            <o alias="brake_right"/>
+        </outputs>
+
+        <params>
+        </params>
+    </spec>
+
+    <functions>
+        <f name="gnd" by_spec="core.source.constant">
+            <param alias="value">0.0</param>
+        </f>
+
+        <f name="mux_thr" by_spec="core.controller.mux">
+            <in alias="input0">throttle_override</in>
+            <in alias="input1">gnd/output</in>
+            <in alias="select">gnd/output</in>
+        </f>
+
+        <f name="mux_mix" by_spec="core.controller.mux">
+            <in alias="input0">mixture_override</in>
+            <in alias="input1">gnd/output</in>
+            <in alias="select">gnd/output</in>
+        </f>
+
+    </functions>
+
+    <link_outputs>
+        <link alias="aileron">gnd/output</link>
+        <link alias="elevator">gnd/output</link>
+        <link alias="rudder">gnd/output</link>
+        <link alias="mixture">mux_mix/output</link>
+        <link alias="throttle">mux_thr/output</link>
+        <link alias="flaps">gnd/output</link>
+        <link alias="brake_left">gnd/output</link>
+        <link alias="brake_right">gnd/output</link>
+    </link_outputs>
+</flow>

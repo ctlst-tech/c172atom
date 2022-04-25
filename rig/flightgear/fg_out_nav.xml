@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <generic>
+        <output>
+            <binary_mode>true</binary_mode>
+            <byte_order>host</byte_order>
+
+
+            <chunk>
+                <name>lat</name>
+                <type>double</type>
+                <factor>0.0174532925199433</factor>
+                <node>/position/latitude-deg</node>
+            </chunk>
+
+            <chunk>
+                <name>lon</name>
+                <type>double</type>
+                <factor>0.0174532925199433</factor>
+                <node>/position/longitude-deg</node>
+            </chunk>
+
+            <chunk>
+                <name>alt</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/position/altitude-ft</node>
+            </chunk>
+
+            <chunk>
+                <name>roll</name>
+                <type>double</type>
+                <factor>0.0174532925199433</factor>
+                <node>/orientation/roll-deg</node>
+            </chunk>
+
+            <chunk>
+                <name>pitch</name>
+                <type>double</type>
+                <factor>0.0174532925199433</factor>
+                <node>/orientation/pitch-deg</node>
+            </chunk>
+
+            <chunk>
+                <name>heading</name>
+                <type>double</type>
+                <factor>0.0174532925</factor>
+                <node>/orientation/heading-deg</node>
+            </chunk>
+
+            <chunk>
+                <name>vel</name>
+                <type>double</type>
+                <factor>0.514444444</factor>
+                <node>/velocities/airspeed-kt</node>
+            </chunk>
+
+            <chunk>
+                <name>veln</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/velocities/speed-north-fps</node>
+            </chunk>
+
+            <chunk>
+                <name>vele</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/velocities/speed-east-fps</node>
+            </chunk>
+
+            <chunk>
+                <name>veld</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/velocities/speed-down-fps</node>
+            </chunk>
+
+            <chunk>
+                <name>roll_rate</name>
+                <type>double</type>
+                <factor>0.0174532925</factor>
+                <node>/orientation/roll-rate-degps</node>
+            </chunk>
+
+            <chunk>
+                <name>pitch_rate</name>
+                <type>double</type>
+                <factor>0.0174532925</factor>
+                <node>/orientation/pitch-rate-degps</node>
+            </chunk>
+
+            <chunk>
+                <name>yaw_rate</name>
+                <type>double</type>
+                <factor>0.0174532925</factor>
+                <node>/orientation/yaw-rate-degps</node>
+            </chunk>
+
+            <chunk>
+                <name>gx</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/accelerations/pilot/x-accel-fps_sec</node>
+            </chunk>
+
+            <chunk>
+                <name>gy</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/accelerations/pilot/y-accel-fps_sec</node>
+            </chunk>
+
+            <chunk>
+                <name>gz</name>
+                <type>double</type>
+                <factor>0.3048</factor>
+                <node>/accelerations/pilot/z-accel-fps_sec</node>
+            </chunk>	  
+        </output>
+    </generic>
+</PropertyList>

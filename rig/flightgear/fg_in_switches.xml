@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <generic>
+        <input>
+            <binary_mode>true</binary_mode>
+            <byte_order>host</byte_order>
+
+            <chunk>
+                <name>master_bat</name>
+                <type>double</type>
+                <node>/controls/switches/master-bat</node>
+            </chunk>
+
+            <chunk>
+                <name>master_alt</name>
+                <type>double</type>
+                <node>/controls/switches/master-alt</node>
+            </chunk>
+
+            <chunk>
+                <name>master_avionics</name>
+                <type>double</type>
+                <node>/controls/switches/master-avionics</node>
+            </chunk>
+
+            <chunk>
+                <name>starter</name>
+                <type>double</type>
+                <node>/controls/switches/starter</node>
+            </chunk>
+
+            <chunk>
+                <name>magnetos</name>
+                <type>double</type>
+                <node>/controls/switches/magnetos</node>
+            </chunk>
+
+            <chunk>
+                <name>primer</name>
+                <type>double</type>
+                <node>/controls/engines/engine/primer-lever</node>
+            </chunk>
+
+            <chunk>
+                <name>brake_parking</name>
+                <type>double</type>
+                <node>/controls/gear/brake-parking</node>
+            </chunk>
+            
+            <chunk>
+                <name>light_nav</name>
+                <type>double</type>
+                <node>/controls/lighting/nav-lights</node>
+            </chunk>
+
+            <chunk>
+                <name>light_strobe</name>
+                <type>double</type>
+                <node>/controls/lighting/strobe</node>
+            </chunk>
+
+            <chunk>
+                <name>light_beacon</name>
+                <type>double</type>
+                <node>/controls/lighting/beacon</node>
+            </chunk>
+
+            <chunk>
+                <name>light_taxi</name>
+                <type>double</type>
+                <node>/controls/lighting/taxi-light</node>
+            </chunk>
+
+            <chunk>
+                <name>light_landing</name>
+                <type>double</type>
+                <node>/controls/lighting/landing-lights</node>
+            </chunk>
+
+        </input>
+    </generic>
+</PropertyList>

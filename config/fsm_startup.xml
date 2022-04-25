@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<fsminst>
+
+    <spec name="c172_startup">
+        <annotation>
+
+        </annotation>
+
+        <inputs>
+            <i alias="cmd" title="Command" type="str"/>
+
+            <i alias="egt" title="EGT"/>
+            <i alias="cht" title="CHT"/>
+            <i alias="rpm" title="RPM"/>
+        </inputs>
+
+        <outputs>
+            <o alias="master_bat" title="Master_bat"/>
+            <o alias="master_alt" title="Master_alt"/>
+            <o alias="master_avionics" title="Master_avionics"/>
+            <o alias="starter" title="Starter"/>
+            <o alias="magnetos" title="Magnetos"/>
+            <o alias="primer" title="Primer"/>
+
+            <o alias="throttle_override" title="Throttle override"/>
+            <o alias="mixture_override" title="Mixture override"/>
+        </outputs>
+
+        <params>
+            <p alias="rpm_start_threshold" title="RPM Threshold" default="500.0"/>
+            <p alias="cht_threshold" title="CHT Threshold" default="110.0"/>
+            <p alias="egt_threshold" title="EGT Threshold" default="1000.0"/>
+            <p alias="primer_push_cycles" title="Primer push cycles" default="1"/>
+        </params>
+    </spec>
+
+    <vars>
+        <v alias="primer_push_cnt" default = "0" />
+        <v alias="starting_attempts_cnt" default = "0" />
+    </vars>
+
+    <fsm name="startup">
+        <state name="initial">
+            <on_enter>
+                master_bat = 0;
+                master_alt = 0;
+                master_avionics = 0;
+
+                starter = 0;
+                magnetos = 0;
+                primer = 0;
+
+                throttle_override = 0;
+                mixture_override = 0;
+            </on_enter>
+        </state>
+
+        <state name="standby">
+        </state>
+
+        <state name="powering_up">
+            <state name="master_on">
+                <on_enter>
+                    master_bat = 1;
+                </on_enter>
+            </state>
+
+            <state name="avionics_on">
+                <on_enter>
+                    master_avionics = 1;
+                </on_enter>
+            </state>
+
+            <transition from="_begin_" to="master_on">
+                <cond>timeout(1.0)</cond>
+            </transition>
+
+            <transition from="master_on" to="avionics_on">
+                <cond>timeout(1.0)</cond>
+            </transition>
+
+            <transition from="avionics_on" to="_end_">
+                <cond>timeout(1.0)</cond>
+            </transition>
+        </state>
+
+        <state name="powered">
+            <on_enter>
+            </on_enter>
+        </state>
+
+        <state name="engine_starting">
+            <on_enter>
+                primer_push_cnt = 0;
+                starting_attempts_cnt = 0;
+                primer = 0;
+            </on_enter>
+
+            <on_exit>
+                primer = 0;
+                starter = 0;
+                throttle_override = 0;
+            </on_exit>
+
+            <state name="prestart_setup">
+                <on_enter>
+                    throttle_override = 0.2;
+                    mixture_override = 1.0;
+                </on_enter>
+            </state>
+            <state name="primer_pull">
+                <on_enter>
+                    primer = 1.0;
+                </on_enter>
+            </state>
+
+            <state name="primer_push">
+                <on_enter>
+                    primer = 0.0;
+                    primer_push_cnt = primer_push_cnt + 1;
+                </on_enter>
+            </state>
+
+            <state name="magnetos_on">
+                <on_enter>
+                    magnetos = 3;
+                </on_enter>
+            </state>
+
+            <state name="stopped">
+            </state>
+
+            <state name="starter_on">
+                <on_enter>
+                    starter = 1;
+                    starting_attempts_cnt = starting_attempts_cnt + 1;
+                </on_enter>
+                <on_exit>
+                    starter = 0;
+                </on_exit>
+            </state>
+
+            <state name="failed">
+                    <on_enter>
+                        magnetos = 0;
+                    </on_enter>
+            </state>
+            <state name="started">
+            </state>
+            <state name="heating_up">
+            </state>
+
+            <t from="_begin_" to="prestart_setup"><c>timeout(1.0)</c></t>
+            <t from="prestart_setup" to="primer_pull"><c>timeout(1.0)</c></t>
+            <t from="primer_pull" to="primer_push"><c>timeout(2.0)</c></t>
+            <t from="primer_push" to="primer_pull"><c>timeout(2.0)</c></t>
+            <t from="primer_push" to="magnetos_on"><c>primer_push_cnt >= primer_push_cycles</c></t>
+            <t from="magnetos_on" to="stopped"><c>timeout(2.0)</c></t>
+            <t from="stopped" to="starter_on"><c>timeout(2.0)</c></t>
+            <t from="stopped" to="failed"><c>starting_attempts_cnt >=3</c></t>
+            <t from="starter_on" to="stopped"><c>timeout(4.0)</c></t>
+            <t from="starter_on" to="started"><c>trueduring((rpm > rpm_start_threshold) &amp;&amp; (egt > egt_threshold), 1.0)</c></t>
+            <t from="started" to="heating_up"><c>timeout(2.0) &amp;&amp; trueduring(rpm > rpm_start_threshold, 4.0)</c></t>
+            <t from="heating_up" to="_end_"><c>timeout(2.0) &amp;&amp; trueduring(cht > cht_threshold, 2.0)</c></t>
+        </state>
+
+        <state name="idle">
+        </state>
+
+        <state name="engine_stopping">
+            <state name="trigger_stop">
+                <on_enter>
+                    magnetos = 0;
+                </on_enter>
+            </state>
+            <state name="wait_stop">
+            </state>
+            <!-- TODO wait egt -->
+            <t from="_begin_" to="trigger_stop"><c>true</c></t>
+            <t from="trigger_stop" to="wait_stop"><c>timeout(0.5)</c></t>
+            <t from="wait_stop" to="_end_"><c>trueduring(rpm &lt; 10, 2)</c></t>
+        </state>
+
+        <state name="shutting_down">
+            <on_enter>
+            </on_enter>
+        </state>
+
+        <transition from="_begin_" to="initial">
+            <cond>true</cond>
+        </transition>
+
+        <transition from="initial" to="standby">
+            <cond>timeout(2.0)</cond>
+        </transition>
+
+        <transition from="standby" to="powering_up">
+            <cond>cmd == "powerup"</cond>
+        </transition>
+
+        <transition from="powering_up" to="powered">
+            <cond>powering_up == "_end_"</cond>
+        </transition>
+
+        <transition from="powered" to="engine_starting">
+            <cond>cmd == "engine_start"</cond>
+        </transition>
+
+        <transition from="engine_starting" to="idle">
+            <cond>engine_starting == "_end_"</cond>
+        </transition>
+
+        <transition from="idle, engine_starting" to="engine_stopping">
+            <cond>cmd == "engine_stop"</cond>
+        </transition>
+
+        <transition from="engine_stopping" to="powered">
+            <cond>engine_stopping == "_end_"</cond>
+        </transition>
+    </fsm>
+
+</fsminst>

@@ -1,0 +1,82 @@
+
+<ibr>
+    <spec name="ibr_flightgear">
+        <annotation>
+        </annotation>
+
+        <inputs>
+            <i alias="switches" annotation="Switches control vector"/>
+            <i alias="control" annotation="Airplane control vector"/>
+        </inputs>
+
+        <outputs>
+            <o alias="engine" annotation="Engine vector"/>
+            <o alias="nav" annotation="Navigational state vector"/>
+        </outputs>
+
+        <params>
+        </params>
+    </spec>
+
+    <protocol name="fg_interaction">
+        <msg name="nav">
+            <fs name="lat" type="double"/>
+            <fs name="lon" type="double"/>
+            <fs name="alt" type="double"/>
+            <fs name="roll" type="double"/>
+            <fs name="pitch" type="double"/>
+            <fs name="yaw" type="double"/>
+            <fs name="vel" type="double"/>
+            <fs name="veln" type="double"/>
+            <fs name="vele" type="double"/>
+            <fs name="veld" type="double"/>
+            <fs name="roll_rate" type="double"/>
+            <fs name="pitch_rate" type="double"/>
+            <fs name="yaw_rate" type="double"/>
+            <fs name="gx" type="double"/>
+            <fs name="gy" type="double"/>
+            <fs name="gz" type="double"/>
+        </msg>
+
+        <msg name="engine">
+            <fs name="rpm" type="double"/>
+            <fs name="cht" type="double"/>
+            <fs name="egt" type="double"/>
+            <fs name="oil_press" type="double"/>
+        </msg>
+
+        <msg name="control">
+            <fs name="aileron" type="double"/>
+            <fs name="elevator" type="double"/>
+            <fs name="rudder" type="double"/>
+            <fs name="mixture" type="double"/>
+            <fs name="throttle" type="double"/>
+            <fs name="flaps" type="double"/>
+            <fs name="brake_left" type="double"/>
+            <fs name="brake_right" type="double"/>
+        </msg>
+
+        <msg name="switches">
+            <fs name="master_bat" type="double"/>
+            <fs name="master_alt" type="double"/>
+            <fs name="master_avionics" type="double"/>
+            <fs name="starter" type="double"/>
+            <fs name="magnetos" type="double"/>
+            <fs name="primer" type="double"/>
+            <fs name="brake_parking" type="double"/>
+            <fs name="light_nav" type="double"/>
+            <fs name="light_strobe" type="double"/>
+            <fs name="light_beacon" type="double"/>
+            <fs name="light_taxi" type="double"/>
+            <fs name="light_landing" type="double"/>
+        </msg>
+    </protocol>
+
+<!--    <process name="test_udp2eswb" protocol="test" msg="msg_sample" src="udp://*:1111" dst="eswb://msg_out" />-->
+<!--    <process name="test_eswb2udp" protocol="test" msg="msg_sample" src="eswb://msg_in" dst="udp://127.0.0.1:1112" />-->
+    <process name="sens_nav" protocol="fg_interaction" msg="nav" src="udp://*:6010" dst="func://nav" />
+    <process name="sens_engine" protocol="fg_interaction" msg="engine" src="udp://*:6011" dst="func://engine" />
+    <process name="cnt_airplane" protocol="fg_interaction" msg="control" src="func_br://control" dst="udp://127.0.0.1:6000" />
+    <process name="cnt_switches" protocol="fg_interaction" msg="switches" src="func_br://switches" dst="udp://127.0.0.1:6001" />
+
+</ibr>

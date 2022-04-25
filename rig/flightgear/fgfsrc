@@ -1,0 +1,19 @@
+--prop:/nasal/local_weather/enabled=false
+--metar=XXXX 012345Z 15003KT 19SM FEW072 FEW350 25/07 Q1028 NOSIG
+--prop:/environment/weather-scenario=Core high pressure region
+--prop:/sim/rendering/multi-sample-buffers=1
+--prop:/sim/rendering/multi-samples=2
+--disable-rembrandt
+--prop:/sim/rendering/shaders/skydome=true
+--prop:/sim/rendering/texture-cache/cache-enabled=false
+--disable-terrasync
+--disable-sentry
+--aircraft-dir=/Applications/FlightGear.app/Contents/Resources/data/Aircraft/c172p
+--aircraft=c172p-bush36
+--state=auto
+--airport=BIKF
+--fg-aircraft=/Users/goofy/Library/Application Support/FlightGear/Aircraft/org.flightgear.fgaddon.stable_2020/Aircraft 
+--generic=socket,in,50,,6000,udp,fg_in_control
+--generic=socket,in,50,,6001,udp,fg_in_switches
+--generic=socket,out,50,127.0.0.1,6010,udp,fg_out_nav
+--generic=socket,out,50,127.0.0.1,6011,udp,fg_out_engine

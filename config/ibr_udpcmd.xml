@@ -1,0 +1,22 @@
+<ibr>
+    <spec name="ibr_udpcmd">
+        <annotation>
+        </annotation>
+
+        <outputs>
+            <o alias="cmd" annotation="Command string"/>
+        </outputs>
+
+        <params>
+        </params>
+    </spec>
+
+    <protocol name="fg_interaction">
+        <msg name="cmd">
+            <fa name="cmd" elem_type="uint8" size="50"/>
+        </msg>
+    </protocol>
+
+    <process name="udpcmd" protocol="fg_interaction" msg="cmd" src="udp://*:5000" dst="func://cmd" />
+
+</ibr>

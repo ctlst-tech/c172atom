@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <generic>
+        <input>
+            <binary_mode>true</binary_mode>
+            <byte_order>host</byte_order>
+
+            <chunk>
+                <name>aileron</name>
+                <type>double</type>
+                <node>/controls/flight/aileron</node>
+            </chunk>
+
+            <chunk>
+                <name>elevator</name>
+                <type>double</type>
+                <node>/controls/flight/elevator</node>
+            </chunk>
+
+            <chunk>
+                <name>rudder</name>
+                <type>double</type>
+                <node>/controls/flight/rudder</node>
+            </chunk>
+
+            <chunk>
+                <name>mixture</name>
+                <type>double</type>
+                <node>/controls/engines/current-engine/mixture</node>
+            </chunk>
+
+            <chunk>
+                <name>throttle</name>
+                <type>double</type>
+                <node>/controls/engines/current-engine/throttle</node>
+            </chunk>
+
+            <chunk>
+                <name>flaps</name>
+                <type>double</type>
+                <node>/controls/flight/flaps</node>
+            </chunk>
+
+            <chunk>
+                <name>brake_left</name>
+                <type>double</type>
+                <node>/controls/gear/brake-left</node>
+            </chunk>
+
+            <chunk>
+                <name>brake_right</name>
+                <type>double</type>
+                <node>/controls/gear/brake-right</node>
+            </chunk>
+        </input>
+    </generic>
+</PropertyList>

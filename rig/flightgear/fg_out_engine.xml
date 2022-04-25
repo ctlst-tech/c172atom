@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <generic>
+        <output>
+            <binary_mode>true</binary_mode>
+            <byte_order>host</byte_order>
+
+            <chunk>
+                <name>rpm</name>
+                <type>double</type>
+                <node>/engines/engine/rpm</node>
+            </chunk>
+
+            <chunk>
+                <name>cht</name>
+                <type>double</type>
+                <node>/engines/engine/cht-degf</node>
+            </chunk>
+
+            <chunk>
+                <name>egt</name>
+                <type>double</type>
+                <node>/engines/engine/egt-degf</node>
+            </chunk>
+
+            <chunk>
+                <name>oil_press</name>
+                <type>double</type>
+                <node>/engines/engine/oil-pressure-psi</node>
+            </chunk>
+        </output>
+    </generic>
+</PropertyList>

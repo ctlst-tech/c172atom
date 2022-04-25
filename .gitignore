@@ -1,0 +1,9 @@
+.idea
+cmake-build-debug
+cmake-build-release
+build
+.vscode
+__pycache__
+.DS_Store
+fspecs.cmake
+f_specs_reg.c

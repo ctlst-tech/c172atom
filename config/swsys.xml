@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<swsys>
+
+    <bus name="vehicle" max_topics="256" eq_channel="2">
+        <event_queue size="20" buffer_size="2000"/>
+        <dir name="control" eq_channel="1"/>
+        <dir name="switches" eq_channel="1"/>
+        <dir name="engine_overrides" eq_channel="1"/>
+    </bus>
+
+    <bus name="nav" max_topics="256" eq_channel="2">
+        <event_queue size="20" buffer_size="2000"/>
+    </bus>
+
+    <bus name="operator" max_topics="256" eq_channel="2">
+        <event_queue size="20" buffer_size="2000"/>
+    </bus>
+
+    <service type="eqrb_tcp" name="debug">
+        <param alias="port">0</param>
+    </service>
+
+    <task type="fsm" name="startup" config="fsm_startup.xml" priority="5" clk_method="inp_upd" clk_input_path="itb:/vehicle/engine/egt">
+        <connect>
+            <in alias="egt, cht, rpm">itb:/vehicle/engine/$alias</in>
+            <in alias="cmd">itb:/operator/cmd_msg/cmd</in>
+
+            <out alias="master_bat, master_alt, master_avionics, starter, magnetos, primer">itb:/vehicle/switches/$alias</out>
+            <out alias="throttle_override, mixture_override">itb:/vehicle/engine_overrides/$alias</out>
+        </connect>
+    </task>
+
+    <task type="ibr" name="fg_interface" config="ibr_flightgear.xml" priority="5" clk_method="freerun">
+        <connect>
+            <out alias="engine">itb:/vehicle/engine</out>
+            <out alias="nav">itb:/nav/state</out>
+
+            <in alias="control">itb:/vehicle/control</in>
+            <in alias="switches">itb:/vehicle/switches</in>
+        </connect>
+    </task>
+
+    <task type="ibr" name="cmd" config="ibr_udpcmd.xml" priority="5" clk_method="freerun">
+        <connect>
+            <out alias="cmd">itb:/operator/cmd_msg</out>
+        </connect>
+    </task>
+
+    <task type="flow" name="control" config="flow_control.xml" priority="5" clk_method="inp_upd" clk_input_path="itb:/nav/state">
+        <connect>
+            <nav alias="nav">itb:/nav/state</nav>
+            <in alias="throttle_override, mixture_override">itb:/vehicle/engine_overrides/$alias</in>
+            <out alias="aileron, elevator, rudder, mixture, throttle, flaps, brake_left, brake_right">itb:/vehicle/control/$alias</out>
+        </connect>
+    </task>
+
+</swsys>
