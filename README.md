@@ -7,7 +7,7 @@
 ## Run it
 
 1. Run ```make prebuild``` to generate code of atomic functions
-2. Build ```catom``` cmake target
+2. Build **catom** runner by ```make catom``` command
 3. Copy ```rig/flightgear/*.xml``` to ```Protocol``` dir inside your FlightGear installation
 4. Add the following to the FlightGear command line options (check that c172 is selected as an aircraft):
 ```
@@ -16,5 +16,6 @@
 --generic=socket,out,50,127.0.0.1,6010,udp,fg_out_nav
 --generic=socket,out,50,127.0.0.1,6011,udp,fg_out_engine
 ```
-5. Run ```catom``` exec passing path to ```config/swsys.xml``` as the only argument
-6. Use ```rig/flightgear/commander.sh``` to toggle commands
+5. Start FlightGear
+6. Run ```catom``` by ```make run_catom```
+7. Use ```rig/flightgear/commander.sh``` to toggle commands
