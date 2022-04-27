@@ -6,6 +6,7 @@
 
 ## Run it
 
+0. Make sure you have all submodules inited and updated: ```git submodule update --init --recursive```
 1. Run ```make prebuild``` to generate code of atomic functions
 2. Build **catom** runner by ```make catom``` command
 3. Copy ```rig/flightgear/*.xml``` to ```Protocol``` dir inside your FlightGear installation
