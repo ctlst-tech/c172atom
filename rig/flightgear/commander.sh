@@ -10,6 +10,18 @@ case $CLI_CMD in
    *) echo Unknown command && exit 0 ;;
 esac
 
-WAIT_OPT="-w 0"
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)
+        WAIT_OPT=""
+        ECHO_OPT="-e";;
 
-echo -e "$CMD2UDP\x00" | nc $WAIT_OPT -u 127.0.0.1 5000
+    Darwin*)
+        WAIT_OPT="-w 0"
+        ECHO_OPT="-e";;
+
+    *)
+        exit
+esac
+
+echo -n $ECHO_OPT "$CMD2UDP\x00" | nc $WAIT_OPT -u 127.0.0.1 5000
